@@ -48,14 +48,15 @@
             cursor: pointer;
         }
 
-        #particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
+        .game-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
         }
 
         .toggle-button {
@@ -90,15 +91,24 @@
             background-color: green;
         }
 
+        .game-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: #87CEEB;
+            z-index: 1000;
+            text-align: center;
+        }
+
         .game {
-            margin-top: 20px;
-            font-size: 20px;
             position: relative;
-            height: 400px;
+            width: 100%;
+            height: 100%;
             background-color: #87CEEB;
             border: 3px solid #4B5320;
-            overflow: hidden;
-            border-radius: 10px;
         }
 
         .character, .diamond {
@@ -149,12 +159,27 @@
             background-color: #4CAF50;
             color: white;
         }
+
+        .exit-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            z-index: 1001;
+        }
     </style>
 </head>
 <body>
 
     <button class="toggle-button">OFF</button>
     <button class="theme-button">Cambia Tema</button>
+    <button class="game-button" onclick="toggleGame()">GAME</button>
 
     <div id="particles"></div>
 
@@ -170,12 +195,6 @@
             <textarea name="message" placeholder="Messaggio" required></textarea>
             <button type="submit">Invia</button>
         </form>
-    </div>
-
-    <div class="section game">
-        <div class="score">Punteggio: <span id="score">0</span></div>
-        <div class="character" id="character" style="top: 180px; left: 180px;"></div>
-        <div class="diamond" id="diamond" style="top: 50px; left: 50px;"></div>
     </div>
 
     <div class="section leaderboard">
@@ -198,6 +217,15 @@
                 <td>85</td>
             </tr>
         </table>
+    </div>
+
+    <div class="game-container" id="gameContainer">
+        <button class="exit-button" onclick="toggleGame()">EXIT</button>
+        <div class="game">
+            <div class="score">Punteggio: <span id="score">0</span></div>
+            <div class="character" id="character" style="top: 180px; left: 180px;"></div>
+            <div class="diamond" id="diamond" style="top: 50px; left: 50px;"></div>
+        </div>
     </div>
 
     <script>
@@ -239,6 +267,13 @@
             this.textContent = particlesEnabled ? 'OFF' : 'ON';
             this.classList.toggle('on', particlesEnabled);
         });
+
+        // Mostra/Nascondi il gioco
+        function toggleGame() {
+            const gameContainer = document.getElementById('gameContainer');
+            const isVisible = gameContainer.style.display === 'block';
+            gameContainer.style.display = isVisible ? 'none' : 'block';
+        }
 
         // Mini gioco: Minecraft 2D
         const character = document.getElementById('character');
