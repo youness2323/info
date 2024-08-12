@@ -20,9 +20,10 @@
             margin: 50px 0;
         }
 
-        .instagram-logo {
+        .social-logo {
             width: 100px;
             cursor: pointer;
+            margin: 10px;
         }
 
         .contact-form {
@@ -48,15 +49,14 @@
             cursor: pointer;
         }
 
-        .game-button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
         }
 
         .toggle-button {
@@ -91,24 +91,38 @@
             background-color: green;
         }
 
-        .game-container {
-            display: none;
+        .game-button {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background-color: #87CEEB;
-            z-index: 1000;
-            text-align: center;
+            bottom: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: orange;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            z-index: 100;
+        }
+
+        .volpix-logo {
+            width: 100px;
+            cursor: pointer;
+            margin: 20px;
         }
 
         .game {
-            position: relative;
-            width: 100%;
-            height: 100%;
+            display: none;
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 400px;
+            height: 400px;
+            font-size: 20px;
             background-color: #87CEEB;
             border: 3px solid #4B5320;
+            overflow: hidden;
+            border-radius: 10px;
         }
 
         .character, .diamond {
@@ -135,56 +149,65 @@
             z-index: 10;
         }
 
-        .leaderboard {
-            margin-top: 30px;
-            text-align: center;
-        }
-
-        .leaderboard table {
-            margin: 0 auto;
-            border-collapse: collapse;
-            width: 80%;
-            max-width: 500px;
-            border: 2px solid black;
-        }
-
-        .leaderboard th, .leaderboard td {
-            border: 1px solid black;
-            padding: 10px;
-            text-align: center;
-            background-color: white;
-        }
-
-        .leaderboard th {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .exit-button {
+        .modal {
+            display: none;
             position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 10px 20px;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            text-align: center;
+            z-index: 1000;
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: orange;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .modal-content button {
             background-color: red;
             color: white;
             border: none;
             cursor: pointer;
             font-size: 16px;
+            padding: 10px 20px;
             border-radius: 5px;
-            z-index: 1001;
+            margin: 10px;
         }
+
+        .ranking {
+            font-size: 24px;
+            margin: 20px;
+        }
+
+        .owner { color: red; }
+        .sr-admin { color: darkred; }
+        .admin { color: darkred; }
+        .sr-mod { color: blue; }
+        .mod-plus { color: darkblue; }
+        .mod { color: darkblue; }
+        .helper { color: green; }
     </style>
 </head>
 <body>
-
     <button class="toggle-button">OFF</button>
     <button class="theme-button">Cambia Tema</button>
-    <button class="game-button" onclick="toggleGame()">GAME</button>
+    <button class="game-button">GAME</button>
+    <img src="https://i.imgur.com/qO7heGH.png" class="volpix-logo" alt="Volpix Logo" onclick="openVolpix()">
 
     <div id="particles"></div>
 
     <div class="section">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="instagram-logo" alt="Instagram Logo" onclick="window.open('https://www.instagram.com/', '_blank')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="social-logo" alt="Instagram Logo" onclick="window.open('https://www.instagram.com/', '_blank')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/TikTok_logo.svg" class="social-logo" alt="TikTok Logo" onclick="window.open('https://www.tiktok.com/', '_blank')">
     </div>
 
     <div class="section">
@@ -197,34 +220,33 @@
         </form>
     </div>
 
-    <div class="section leaderboard">
-        <h2>Classifica</h2>
-        <table>
-            <tr>
-                <th>Email</th>
-                <th>Punteggio</th>
-            </tr>
-            <tr>
-                <td>kendalelazzouzi@gmail.com</td>
-                <td>120</td>
-            </tr>
-            <tr>
-                <td>example@mail.com</td>
-                <td>95</td>
-            </tr>
-            <tr>
-                <td>youness@example.com</td>
-                <td>85</td>
-            </tr>
-        </table>
+    <div class="game">
+        <div class="score">Punteggio: <span id="score">0</span></div>
+        <div class="character" id="character" style="top: 180px; left: 180px;"></div>
+        <div class="diamond" id="diamond" style="top: 50px; left: 50px;"></div>
+        <button onclick="closeGame()">EXIT</button>
     </div>
 
-    <div class="game-container" id="gameContainer">
-        <button class="exit-button" onclick="toggleGame()">EXIT</button>
-        <div class="game">
-            <div class="score">Punteggio: <span id="score">0</span></div>
-            <div class="character" id="character" style="top: 180px; left: 180px;"></div>
-            <div class="diamond" id="diamond" style="top: 50px; left: 50px;"></div>
+    <div class="modal" id="volpix-modal">
+        <div class="modal-content">
+            <button onclick="closeVolpix()">EXIT</button>
+            <button onclick="showIp()">IP</button>
+            <p id="ip-display"></p>
+        </div>
+    </div>
+
+    <div class="modal" id="staff-modal">
+        <div class="modal-content">
+            <button onclick="closeStaff()">EXIT</button>
+            <div class="ranking">
+                <div class="owner">OWNER | youness | ale.</div>
+                <div class="sr-admin">SR.ADMIN | niente | niente.</div>
+                <div class="admin">ADMIN | sandy | niente.</div>
+                <div class="sr-mod">SR.MOD | niente | niente.</div>
+                <div class="mod-plus">MOD+ | peppos | niente.</div>
+                <div class="mod">MOD | niente | niente.</div>
+                <div class="helper">HELPER | giulia | niente.</div>
+            </div>
         </div>
     </div>
 
@@ -268,14 +290,60 @@
             this.classList.toggle('on', particlesEnabled);
         });
 
-        // Mostra/Nascondi il gioco
-        function toggleGame() {
-            const gameContainer = document.getElementById('gameContainer');
-            const isVisible = gameContainer.style.display === 'block';
-            gameContainer.style.display = isVisible ? 'none' : 'block';
+        // Cambia tema
+        const themes = [
+            {backgroundColor: '#8B0000', color: 'black'},
+            {backgroundColor: '#00008B', color: 'white'},
+            {backgroundColor: '#4B5320', color: 'yellow'},
+            {backgroundColor: '#FFD700', color: 'black'},
+            {backgroundColor: '#00CED1', color: 'navy'},
+            {backgroundColor: '#228B22', color: 'black'},
+            {backgroundColor: '#FF69B4', color: 'white'},
+            {backgroundColor: '#8A2BE2', color: 'yellow'},
+            {backgroundColor: '#D2691E', color: 'black'},
+            {backgroundColor: '#7FFF00', color: 'black'}
+        ];
+
+        let themeIndex = 0;
+
+        document.querySelector('.theme-button').addEventListener('click', function() {
+            themeIndex = (themeIndex + 1) % themes.length;
+            document.body.style.backgroundColor = themes[themeIndex].backgroundColor;
+            document.body.style.color = themes[themeIndex].color;
+        });
+
+        // Gestione del pulsante "GAME"
+        document.querySelector('.game-button').addEventListener('click', function() {
+            document.querySelector('.game').style.display = 'block';
+        });
+
+        // Logo Volpix e pagina Volpix
+        function openVolpix() {
+            document.getElementById('volpix-modal').style.display = 'flex';
         }
 
-        // Mini gioco: Minecraft 2D
+        function closeVolpix() {
+            document.getElementById('volpix-modal').style.display = 'none';
+        }
+
+        function showIp() {
+            document.getElementById('ip-display').textContent = 'volpixmc.org';
+        }
+
+        function closeGame() {
+            document.querySelector('.game').style.display = 'none';
+        }
+
+        // Pagina Staff
+        function openStaff() {
+            document.getElementById('staff-modal').style.display = 'flex';
+        }
+
+        function closeStaff() {
+            document.getElementById('staff-modal').style.display = 'none';
+        }
+
+        // Movimenti del personaggio nel mini gioco
         const character = document.getElementById('character');
         const diamond = document.getElementById('diamond');
         const scoreElement = document.getElementById('score');
@@ -327,28 +395,6 @@
         }
 
         document.addEventListener('keydown', moveCharacter);
-
-        // Cambia tema
-        const themes = [
-            {backgroundColor: '#8B0000', color: 'black'},
-            {backgroundColor: '#00008B', color: 'white'},
-            {backgroundColor: '#4B5320', color: 'yellow'},
-            {backgroundColor: '#FFD700', color: 'black'},
-            {backgroundColor: '#00CED1', color: 'navy'},
-            {backgroundColor: '#228B22', color: 'black'},
-            {backgroundColor: '#FF69B4', color: 'white'},
-            {backgroundColor: '#8A2BE2', color: 'yellow'},
-            {backgroundColor: '#D2691E', color: 'black'},
-            {backgroundColor: '#7FFF00', color: 'black'}
-        ];
-
-        let themeIndex = 0;
-
-        document.querySelector('.theme-button').addEventListener('click', function() {
-            themeIndex = (themeIndex + 1) % themes.length;
-            document.body.style.backgroundColor = themes[themeIndex].backgroundColor;
-            document.body.style.color = themes[themeIndex].color;
-        });
     </script>
 </body>
 </html>
