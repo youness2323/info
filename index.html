@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Youness Informacion</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #8B0000;
+            color: black;
+            overflow: hidden;
+            position: relative;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        .section {
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .instagram-logo {
+            width: 100px;
+            cursor: pointer;
+        }
+
+        .contact-form {
+            margin: 0 auto;
+            max-width: 300px;
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .contact-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            z-index: 100;
+        }
+
+        .theme-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            z-index: 100;
+        }
+
+        .toggle-button.on {
+            background-color: green;
+        }
+
+        .game {
+            margin-top: 20px;
+            font-size: 20px;
+            position: relative;
+            height: 400px;
+            background-color: #87CEEB;
+            border: 3px solid #4B5320;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .character, .diamond {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-size: cover;
+        }
+
+        .character {
+            background-image: url('https://i.imgur.com/uHJD6Zw.png');
+        }
+
+        .diamond {
+            background-image: url('https://i.imgur.com/zPn6kS2.png');
+        }
+
+        .score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: black;
+            font-size: 24px;
+            z-index: 10;
+        }
+
+        .leaderboard {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .leaderboard table {
+            margin: 0 auto;
+            border-collapse: collapse;
+            width: 80%;
+            max-width: 500px;
+            border: 2px solid black;
+        }
+
+        .leaderboard th, .leaderboard td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+            background-color: white;
+        }
+
+        .leaderboard th {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="toggle-button">OFF</button>
+    <button class="theme-button">Cambia Tema</button>
+
+    <div id="particles"></div>
+
+    <div class="section">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="instagram-logo" alt="Instagram Logo" onclick="window.open('https://www.instagram.com/', '_blank')">
+    </div>
+
+    <div class="section">
+        <h2>Contattami</h2>
+        <form class="contact-form">
+            <input type="text" name="name" placeholder="Nome" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <textarea name="message" placeholder="Messaggio" required></textarea>
+            <button type="submit">Invia</button>
+        </form>
+    </div>
+
+    <div class="section game">
+        <div class="score">Punteggio: <span id="score">0</span></div>
+        <div class="character" id="character" style="top: 180px; left: 180px;"></div>
+        <div class="diamond" id="diamond" style="top: 50px; left: 50px;"></div>
+    </div>
+
+    <div class="section leaderboard">
+        <h2>Classifica</h2>
+        <table>
+            <tr>
+                <th>Email</th>
+                <th>Punteggio</th>
+            </tr>
+            <tr>
+                <td>kendalelazzouzi@gmail.com</td>
+                <td>120</td>
+            </tr>
+            <tr>
+                <td>example@mail.com</td>
+                <td>95</td>
+            </tr>
+            <tr>
+                <td>youness@example.com</td>
+                <td>85</td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        // Animazione delle particelle
+        const particles = document.getElementById('particles');
+        let particlesEnabled = true;
+
+        function createParticle() {
+            if (particlesEnabled) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = '-10px';
+                particle.style.width = '5px';
+                particle.style.height = '5px';
+                particle.style.backgroundColor = 'white';
+                particle.style.borderRadius = '50%';
+                particle.style.opacity = Math.random();
+                particle.style.transform = `scale(${Math.random()})`;
+                particle.style.transition = 'transform 3s ease, top 3s ease';
+
+                particles.appendChild(particle);
+
+                setTimeout(() => {
+                    particle.style.transform = 'translateY(100vh)';
+                }, 10);
+
+                setTimeout(() => {
+                    particle.remove();
+                }, 3000);
+            }
+        }
+
+        setInterval(createParticle, 100);
+
+        // ON-OFF particelle
+        document.querySelector('.toggle-button').addEventListener('click', function() {
+            particlesEnabled = !particlesEnabled;
+            this.textContent = particlesEnabled ? 'OFF' : 'ON';
+            this.classList.toggle('on', particlesEnabled);
+        });
+
+        // Mini gioco: Minecraft 2D
+        const character = document.getElementById('character');
+        const diamond = document.getElementById('diamond');
+        const scoreElement = document.getElementById('score');
+        let score = 0;
+
+        function moveCharacter(e) {
+            const key = e.key;
+            const characterRect = character.getBoundingClientRect();
+            const gameRect = document.querySelector('.game').getBoundingClientRect();
+
+            if (key === 'ArrowUp' && characterRect.top > gameRect.top) {
+                character.style.top = character.offsetTop - 10 + 'px';
+            }
+            if (key === 'ArrowDown' && characterRect.bottom < gameRect.bottom) {
+                character.style.top = character.offsetTop + 10 + 'px';
+            }
+            if (key === 'ArrowLeft' && characterRect.left > gameRect.left) {
+                character.style.left = character.offsetLeft - 10 + 'px';
+            }
+            if (key === 'ArrowRight' && characterRect.right < gameRect.right) {
+                character.style.left = character.offsetLeft + 10 + 'px';
+            }
+
+            checkCollision();
+        }
+
+        function checkCollision() {
+            const characterRect = character.getBoundingClientRect();
+            const diamondRect = diamond.getBoundingClientRect();
+
+            if (
+                characterRect.left < diamondRect.right &&
+                characterRect.right > diamondRect.left &&
+                characterRect.top < diamondRect.bottom &&
+                characterRect.bottom > diamondRect.top
+            ) {
+                score += 1;
+                scoreElement.textContent = score;
+                moveDiamond();
+            }
+        }
+
+        function moveDiamond() {
+            const gameRect = document.querySelector('.game').getBoundingClientRect();
+            const randomTop = Math.floor(Math.random() * (gameRect.height - 40));
+            const randomLeft = Math.floor(Math.random() * (gameRect.width - 40));
+            diamond.style.top = randomTop + 'px';
+            diamond.style.left = randomLeft + 'px';
+        }
+
+        document.addEventListener('keydown', moveCharacter);
+
+        // Cambia tema
+        const themes = [
+            {backgroundColor: '#8B0000', color: 'black'},
+            {backgroundColor: '#00008B', color: 'white'},
+            {backgroundColor: '#4B5320', color: 'yellow'},
+            {backgroundColor: '#FFD700', color: 'black'},
+            {backgroundColor: '#00CED1', color: 'navy'},
+            {backgroundColor: '#228B22', color: 'black'},
+            {backgroundColor: '#FF69B4', color: 'white'},
+            {backgroundColor: '#8A2BE2', color: 'yellow'},
+            {backgroundColor: '#D2691E', color: 'black'},
+            {backgroundColor: '#7FFF00', color: 'black'}
+        ];
+
+        let themeIndex = 0;
+
+        document.querySelector('.theme-button').addEventListener('click', function() {
+            themeIndex = (themeIndex + 1) % themes.length;
+            document.body.style.backgroundColor = themes[themeIndex].backgroundColor;
+            document.body.style.color = themes[themeIndex].color;
+        });
+    </script>
+</body>
+</html>
