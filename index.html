@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Youness Informacion</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/botui/build/botui.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/botui/build/botui-theme-default.css">
     <style>
         body {
             margin: 0;
@@ -63,46 +65,103 @@
             z-index: 0;
         }
 
-        .toggle-button, .theme-button, .volpix-button, .staff-button {
+        .menu-toggle {
             position: fixed;
-            padding: 10px 20px;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background-color: #333;
+            color: white;
             border: none;
-            cursor: pointer;
-            font-size: 16px;
             border-radius: 5px;
+            cursor: pointer;
+            font-size: 24px;
+            text-align: center;
+            line-height: 40px;
             z-index: 100;
         }
 
-        .toggle-button {
-            top: 20px;
-            right: 20px;
-            background-color: red;
+        .menu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 25%;
+            height: 100%;
+            background-color: #666;
             color: white;
+            padding: 20px;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            z-index: 100;
         }
 
-        .toggle-button.on {
-            background-color: green;
+        .menu.active {
+            transform: translateX(0);
         }
 
-        .theme-button {
-            top: 20px;
-            left: 20px;
-            background-color: black;
+        .menu a {
+            display: block;
+            margin: 10px 0;
             color: white;
+            text-decoration: none;
+            font-size: 18px;
         }
 
-        .volpix-button {
+        .menu a:hover {
+            text-decoration: underline;
+        }
+
+        .chatbot {
+            position: fixed;
             bottom: 20px;
             right: 20px;
-            background-color: orange;
-            color: black;
+            width: 300px;
+            height: 400px;
+            border: 2px solid #ffffff;
+            background-color: #333333;
+            display: none;
+            z-index: 100;
         }
 
-        .staff-button {
-            bottom: 20px;
-            left: 20px;
-            background-color: purple;
-            color: white;
+        .chatbot-header {
+            background-color: #61dafb;
+            color: #000000;
+            padding: 10px;
+            font-size: 18px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .chatbot-content {
+            height: calc(100% - 40px);
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .chatbot-input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .chatbot-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #61dafb;
+            color: #000000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .chatbot-button:hover {
+            background-color: #21a1f1;
         }
 
         .game {
@@ -179,20 +238,32 @@
 </head>
 <body>
 
-    <!-- Logos and Buttons -->
+    <!-- Logos and Menu -->
     <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="instagram-logo" alt="Instagram Logo" onclick="window.open('https://www.instagram.com/', '_blank')">
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/60/TikTok_logo_2018.png" class="tiktok-logo" alt="TikTok Logo" onclick="window.open('https://www.tiktok.com/', '_blank')">
 
-    <button class="toggle-button">OFF</button>
-    <button class="theme-button">Cambia Tema</button>
-    <button class="volpix-button" onclick="window.open('#game-section', '_self')">Volpix</button>
-    <button class="staff-button" onclick="window.open('#staff-section', '_self')">Staff</button>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    
+    <div id="menu" class="menu">
+        <a href="#game-section">Game</a>
+        <a href="#contact-section">Contattami</a>
+        <a href="#staff-section">Staff</a>
+        <a href="#" id="chatbot-toggle">Chat con Youness GPT</a>
+        <a href="https://discord.gg/q6XW2szqwP" target="_blank">Discord</a>
+    </div>
 
     <div id="particles"></div>
 
+    <div class="chatbot" id="chatbot">
+        <div class="chatbot-header" onclick="toggleChatbot()">Youness GPT</div>
+        <div class="chatbot-content" id="chatbot-content"></div>
+        <input type="text" class="chatbot-input" id="chatbot-input" placeholder="Scrivi un messaggio...">
+        <button class="chatbot-button" onclick="sendMessage()">Invia</button>
+    </div>
+
     <div class="section" id="contact-section">
         <h2>Contattami</h2>
-        <form class="contact-form">
+        <form class="contact-form" id="contactForm">
             <input type="text" name="name" placeholder="Nome" required>
             <input type="email" name="email" placeholder="Email" required>
             <textarea name="message" placeholder="Messaggio" required></textarea>
@@ -202,159 +273,191 @@
 
     <div class="section game" id="game-section">
         <h2>Catch the Pixel</h2>
-        <div class="score">Punteggio: <span id="score">0</span></div>
-        <div class="character" id="character" style="top: 180px; left: 180px;"></div>
-        <div class="diamond" id="diamond" style="top: 50px; left: 50px;"></div>
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div id="score">Score: 0</div>
+        <div id="highscore">High Score: 0</div>
+        <button id="startButton">Start Game</button>
     </div>
 
     <div class="section leaderboard" id="leaderboard-section">
-        <h2>Classifica</h2>
+        <h2>Leaderboard</h2>
         <table>
-            <tr>
-                <th>Email</th>
-                <th>Punteggio</th>
-            </tr>
-            <tr>
-                <td>kendalelazzouzi@gmail.com</td>
-                <td>120</td>
-            </tr>
-            <tr>
-                <td>example@mail.com</td>
-                <td>95</td>
-            </tr>
-            <tr>
-                <td>youness@example.com</td>
-                <td>85</td>
-            </tr>
+            <thead>
+                <tr>
+                    <th>Posizione</th>
+                    <th>Nome</th>
+                    <th>Punteggio</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Giocatore1</td>
+                    <td>150</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Giocatore2</td>
+                    <td>120</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Giocatore3</td>
+                    <td>100</td>
+                </tr>
+            </tbody>
         </table>
     </div>
 
     <div class="section staff-table" id="staff-section">
-        <h2>Classifica Staff</h2>
+        <h2>Staff</h2>
         <table>
-            <tr>
-                <th>Ruolo</th>
-                <th>Nome</th>
-                <th>Altro</th>
-            </tr>
-            <tr>
-                <td class="owner">OWNER</td>
-                <td class="owner">youness</td>
-                <td class="owner">peppos</td>
-            </tr>
-            <tr>
-                <td class="sr-admin">SR.ADMIN</td>
-                <td class="sr-admin"></td>
-                <td class="sr-admin"></td>
-            </tr>
-            <tr>
-                <td class="admin">ADMIN</td>
-                <td class="admin">sandy</td>
-                <td class="admin"></td>
-            </tr>
-            <tr>
-                <td class="sr-mod">SR.MOD</td>
-                <td class="sr-mod"></td>
-                <td class="sr-mod"></td>
-            </tr>
-            <tr>
-                <td class="mod-plus">MOD+</td>
-                <td class="mod-plus">peppos</td>
-                <td class="mod-plus"></td>
-            </tr>
-            <tr>
-                <td class="mod">MOD</td>
-                <td class="mod"></td>
-                <td class="mod"></td>
-            </tr>
-            <tr>
-                <td class="helper">HELPER</td>
-                <td class="helper">giulia</td>
-                <td class="helper"></td>
-            </tr>
+            <thead>
+                <tr>
+                    <th>Ruolo</th>
+                    <th>Nome</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="owner">Owner</td>
+                    <td>Stefano</td>
+                </tr>
+                <tr>
+                    <td class="sr-admin">Senior Admin</td>
+                    <td>Alessandro</td>
+                </tr>
+                <tr>
+                    <td class="admin">Admin</td>
+                    <td>Marco</td>
+                </tr>
+                <tr>
+                    <td class="sr-mod">Senior Mod</td>
+                    <td>Lucia</td>
+                </tr>
+                <tr>
+                    <td class="mod-plus">Mod Plus</td>
+                    <td>Giulia</td>
+                </tr>
+                <tr>
+                    <td class="mod">Mod</td>
+                    <td>Francesco</td>
+                </tr>
+                <tr>
+                    <td class="helper">Helper</td>
+                    <td>Claudia</td>
+                </tr>
+            </tbody>
         </table>
     </div>
 
     <script>
-        // Particelle
-        const particles = document.getElementById('particles');
+        // Chatbot Functionality
+        const botui = new BotUI('chatbot-content');
+        const chatbot = document.getElementById('chatbot');
+        const chatbotInput = document.getElementById('chatbot-input');
+        const chatbotContent = document.getElementById('chatbot-content');
 
-        function createParticle() {
-            const particle = document.createElement('div');
-            particle.style.position = 'absolute';
-            particle.style.width = '5px';
-            particle.style.height = '5px';
-            particle.style.backgroundColor = 'white';
-            particle.style.borderRadius = '50%';
-            particle.style.top = `${Math.random() * window.innerHeight}px`;
-            particle.style.left = `${Math.random() * window.innerWidth}px`;
-            particles.appendChild(particle);
-
-            const duration = Math.random() * 2000 + 1000;
-
-            particle.animate([
-                { transform: 'scale(1)', opacity: 1 },
-                { transform: 'scale(0.5)', opacity: 0 }
-            ], {
-                duration: duration,
-                easing: 'linear',
-                fill: 'forwards'
-            });
-
-            setTimeout(() => {
-                particles.removeChild(particle);
-            }, duration);
+        function toggleChatbot() {
+            chatbot.style.display = chatbot.style.display === 'none' ? 'block' : 'none';
         }
 
-        setInterval(createParticle, 100);
+        function sendMessage() {
+            const message = chatbotInput.value;
+            if (message) {
+                botui.message.add({ content: 'Tu: ' + message });
+                chatbotInput.value = '';
+                // Simula risposta AI
+                setTimeout(() => {
+                    botui.message.add({ content: 'Youness GPT: Questo è un messaggio di risposta automatica.' });
+                }, 1000);
+            }
+        }
 
-        // Cambio di tema
-        const themeButton = document.querySelector('.theme-button');
-        themeButton.addEventListener('click', () => {
-            document.body.classList.toggle('dark-theme');
+        // Menu Toggle
+        function toggleMenu() {
+            document.getElementById('menu').classList.toggle('active');
+        }
+
+        // Contact Form Submission
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                message: formData.get('message')
+            };
+            console.log('Messaggio inviato:', data);
+            alert('Grazie per averci contattato. Ti risponderemo presto.');
+            // Inviare email o messaggio al server
+            // fetch('URL_SERVER', { method: 'POST', body: JSON.stringify(data) });
         });
 
-        // Toggle button
-        const toggleButton = document.querySelector('.toggle-button');
-        toggleButton.addEventListener('click', () => {
-            toggleButton.classList.toggle('on');
-            toggleButton.textContent = toggleButton.classList.contains('on') ? 'ON' : 'OFF';
-        });
-
-        // Game
-        const character = document.getElementById('character');
-        const diamond = document.getElementById('diamond');
-        const scoreDisplay = document.getElementById('score');
+        // Game Functionality
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const pixelSize = 30;
+        const gameDuration = 30000; // 30 seconds
         let score = 0;
+        let highScore = 0;
+        let gameActive = false;
+        let startTime;
+        let interval;
 
-        function moveCharacter() {
-            const x = Math.random() * (window.innerWidth - 40);
-            const y = Math.random() * (window.innerHeight - 40);
-            character.style.left = `${x}px`;
-            character.style.top = `${y}px`;
+        function getRandomPosition() {
+            const x = Math.floor(Math.random() * (canvas.width - pixelSize));
+            const y = Math.floor(Math.random() * (canvas.height - pixelSize));
+            return { x, y };
         }
 
-        function moveDiamond() {
-            const x = Math.random() * (window.innerWidth - 40);
-            const y = Math.random() * (window.innerHeight - 40);
-            diamond.style.left = `${x}px`;
-            diamond.style.top = `${y}px`;
+        function drawPixel() {
+            const { x, y } = getRandomPosition();
+            ctx.fillStyle = '#ff0000';
+            ctx.fillRect(x, y, pixelSize, pixelSize);
         }
 
-        character.addEventListener('click', () => {
-            score++;
-            scoreDisplay.textContent = score;
-            moveCharacter();
+        function startGame() {
+            if (gameActive) return;
+            gameActive = true;
+            score = 0;
+            document.getElementById('score').textContent = `Score: ${score}`;
+            startTime = Date.now();
+            interval = setInterval(() => {
+                if (Date.now() - startTime > gameDuration) {
+                    endGame();
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    drawPixel();
+                }
+            }, 1000);
+        }
+
+        function endGame() {
+            clearInterval(interval);
+            gameActive = false;
+            if (score > highScore) {
+                highScore = score;
+                document.getElementById('highscore').textContent = `High Score: ${highScore}`;
+            }
+            alert(`Game Over! Your Score: ${score}`);
+        }
+
+        canvas.addEventListener('click', (event) => {
+            if (!gameActive) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            const imageData = ctx.getImageData(x, y, pixelSize, pixelSize).data;
+            if (imageData[0] === 255 && imageData[1] === 0 && imageData[2] === 0) {
+                score++;
+                document.getElementById('score').textContent = `Score: ${score}`;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drawPixel();
+            }
         });
 
-        diamond.addEventListener('click', () => {
-            score += 5;
-            scoreDisplay.textContent = score;
-            moveDiamond();
-        });
-
-        moveCharacter();
-        moveDiamond();
+        document.getElementById('startButton').addEventListener('click', startGame);
     </script>
 </body>
 </html>
