@@ -26,6 +26,10 @@
             margin: 0 10px;
         }
 
+        .tiktok-logo {
+            width: 90px;
+        }
+
         .contact-form {
             margin: 0 auto;
             max-width: 300px;
@@ -146,236 +150,215 @@
             border-radius: 5px;
         }
 
-        /* Game Styles */
-        .game {
-            font-size: 20px;
-            position: relative;
-            height: 400px;
-            background-color: #87CEEB;
-            border: 3px solid #4B5320;
-            overflow: hidden;
-            border-radius: 10px;
+        .staff-list {
+            list-style: none;
+            padding: 0;
         }
 
-        .mole {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            background-image: url('https://i.imgur.com/1bX5QH6.png');
-            background-size: cover;
-            cursor: pointer;
-        }
-
-        .score {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            color: black;
+        .staff-list li {
             font-size: 24px;
-            z-index: 10;
+            margin: 10px 0;
         }
 
-        /* Volpix Styles */
-        .volpix-container {
-            background-color: orange;
-            padding: 50px;
-            border-radius: 10px;
-            text-align: center;
-            color: white;
+        .staff-owner {
+            color: red;
         }
 
-        .volpix-ip {
-            font-size: 30px;
-            font-weight: bold;
-            margin: 20px 0;
-            color: #FFD700;
-            background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
-            -webkit-background-clip: text;
-            color: transparent;
-            animation: rainbow 2s infinite;
+        .staff-sradmin {
+            color: darkred;
         }
 
-        @keyframes rainbow {
-            0%{background-position: 0% 50%;}
-            50%{background-position: 100% 50%;}
-            100%{background-position: 0% 50%;}
+        .staff-admin {
+            color: firebrick;
         }
 
-        .volpix-button-group {
-            margin-top: 30px;
+        .staff-srmod {
+            color: blue;
         }
 
-        .volpix-button-group button {
-            padding: 10px 20px;
-            background-color: #FFD700;
+        .staff-modplus {
+            color: darkblue;
+        }
+
+        .staff-mod {
+            color: navy;
+        }
+
+        .staff-helper {
+            color: limegreen;
+        }
+
+        .staff-name {
             color: black;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            margin: 10px;
-            border-radius: 5px;
         }
-
-        /* Staff Styles */
-        .staff-container {
-            background-color: orange;
-            padding: 50px;
-            border-radius: 10px;
-            text-align: center;
-            color: white;
-        }
-
-        .staff-table {
-            width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
-            border-collapse: collapse;
-        }
-
-        .staff-table th, .staff-table td {
-            padding: 10px;
-            border: 2px solid black;
-            color: black;
-            background-color: white;
-            font-size: 18px;
-        }
-
-        .staff-table .owner { color: red; }
-        .staff-table .sradmin { color: darkred; }
-        .staff-table .admin { color: #8B0000; }
-        .staff-table .srmod { color: blue; }
-        .staff-table .modplus { color: darkblue; }
-        .staff-table .mod { color: #00008B; }
-        .staff-table .helper { color: green; }
     </style>
 </head>
 <body>
-    <!-- Pulsanti di controllo -->
-    <button class="toggle-button">OFF</button>
-    <button class="theme-button">Cambia Tema</button>
-    <button class="game-button">GAME</button>
-    <button class="volpix-button">Volpix</button>
-
-    <!-- Effetto particelle -->
-    <div id="particles"></div>
-
-    <!-- Sezione Contatti -->
     <div class="section">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="instagram-logo" alt="Instagram Logo" onclick="window.open('https://www.instagram.com/', '_blank')">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/TikTok_logo.svg" class="tiktok-logo" alt="TikTok Logo" onclick="window.open('https://www.tiktok.com/', '_blank')">
+        <h1>Benvenuto su Youness Informacion</h1>
+        <img src="instagram-logo.png" alt="Instagram" class="instagram-logo">
+        <img src="tiktok-logo.png" alt="TikTok" class="tiktok-logo">
     </div>
 
     <div class="section">
-        <h2>Contattami</h2>
+        <button class="theme-button">Cambia Tema</button>
+    </div>
+
+    <div class="section">
         <form class="contact-form">
-            <input type="text" name="name" placeholder="Nome" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <textarea name="message" placeholder="Messaggio" required></textarea>
+            <input type="text" placeholder="Nome">
+            <input type="email" placeholder="Email">
+            <textarea placeholder="Messaggio"></textarea>
             <button type="submit">Invia</button>
         </form>
     </div>
 
-    <!-- Finestra del Gioco -->
+    <button class="toggle-button">ON/OFF</button>
+    <button class="game-button">GAME</button>
+    <button class="volpix-button">Volpix</button>
+
     <div class="game-window">
-        <button class="exit-button" onclick="closeWindow()">EXIT</button>
-        <div class="game">
-            <div class="score">Punteggio: <span id="score">0</span></div>
-            <div class="mole" id="mole"></div>
-        </div>
+        <button class="exit-button">EXIT</button>
+        <h1>Catch the Pixel</h1>
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div id="score">Score: 0</div>
+        <div id="highscore">High Score: 0</div>
+        <button id="startButton">Start Game</button>
     </div>
 
-    <!-- Finestra Volpix -->
     <div class="volpix-window">
-        <button class="exit-button" onclick="closeWindow()">EXIT</button>
-        <div class="volpix-container">
-            <div class="volpix-ip">volpixmc.org</div>
-            <div class="volpix-button-group">
-                <button onclick="openStaffPage()">STAFF</button>
-            </div>
-        </div>
+        <button class="exit-button">EXIT</button>
+        <h1>Volpix</h1>
+        <button class="staff-button">STAFF</button>
+        <div id="volpix-ip" style="display: none; font-size: 24px; color: rainbow;">volpixmc.org</div>
     </div>
 
-    <!-- Finestra Staff -->
     <div class="staff-window">
-        <button class="exit-button" onclick="closeWindow()">EXIT</button>
-        <div class="staff-container">
-            <table class="staff-table">
-                <tr><th>OWNER</th><td class="owner">youness</td><td class="owner">ale.</td></tr>
-                <tr><th>SR.ADMIN</th><td class="sradmin">niente</td><td class="sradmin">niente</td></tr>
-                <tr><th>ADMIN</th><td class="admin">sandy</td><td class="admin">niente</td></tr>
-                <tr><th>SR.MOD</th><td class="srmod">niente</td><td class="srmod">niente</td></tr>
-                <tr><th>MOD+</th><td class="modplus">peppos</td><td class="modplus">niente</td></tr>
-                <tr><th>MOD</th><td class="mod">niente</td><td class="mod">niente</td></tr>
-                <tr><th>HELPER</th><td class="helper">giulia</td><td class="helper">niente</td></tr>
-            </table>
-        </div>
+        <button class="exit-button">EXIT</button>
+        <h1>Staff</h1>
+        <ul class="staff-list">
+            <li><span class="staff-owner">OWNER:</span> <span class="staff-name">youness | ale.</span></li>
+            <li><span class="staff-sradmin">SR.ADMIN:</span> </li>
+            <li><span class="staff-admin">ADMIN:</span> <span class="staff-name">sandy</span></li>
+            <li><span class="staff-srmod">SR.MOD:</span> </li>
+            <li><span class="staff-modplus">MOD+:</span> <span class="staff-name">peppos</span></li>
+            <li><span class="staff-mod">MOD:</span> </li>
+            <li><span class="staff-helper">HELPER:</span> <span class="staff-name">giulia</span></li>
+        </ul>
     </div>
+
+    <div id="particles"></div>
 
     <script>
-        // Gestione Tema
-        document.querySelector('.theme-button').addEventListener('click', function() {
-            document.body.classList.toggle('dark-theme');
-            document.body.style.backgroundColor = document.body.classList.contains('dark-theme') ? 'black' : '#8B0000';
-            document.body.style.color = document.body.classList.contains('dark-theme') ? 'white' : 'black';
-        });
-
-        // Gestione ON-OFF
-        document.querySelector('.toggle-button').addEventListener('click', function() {
-            this.classList.toggle('on');
-            this.textContent = this.classList.contains('on') ? 'ON' : 'OFF';
-        });
-
-        // Gestione Gioco
+        const toggleButton = document.querySelector('.toggle-button');
         const gameButton = document.querySelector('.game-button');
+        const volpixButton = document.querySelector('.volpix-button');
+        const exitButtons = document.querySelectorAll('.exit-button');
         const gameWindow = document.querySelector('.game-window');
-        let score = 0;
+        const volpixWindow = document.querySelector('.volpix-window');
+        const staffWindow = document.querySelector('.staff-window');
+        const staffButton = document.querySelector('.staff-button');
+        const volpixIp = document.getElementById('volpix-ip');
+        const themeButton = document.querySelector('.theme-button');
 
-        gameButton.addEventListener('click', function() {
-            gameWindow.style.display = 'flex';
-            startGame();
+        let themes = ['#8B0000', '#FF4500', '#32CD32', '#1E90FF', '#FFD700', '#4B0082', '#FF1493'];
+        let currentThemeIndex = 0;
+
+        toggleButton.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            toggleButton.classList.toggle('on');
         });
 
-        // Funzioni Gioco
-        function startGame() {
-            const mole = document.getElementById('mole');
-            let gameInterval = setInterval(moveMole, 1000);
+        gameButton.addEventListener('click', () => {
+            gameWindow.style.display = 'flex';
+        });
 
-            mole.addEventListener('click', function() {
-                score++;
-                document.getElementById('score').textContent = score;
-                moveMole();
-            });
-
-            function moveMole() {
-                const x = Math.random() * (gameWindow.clientWidth - 50);
-                const y = Math.random() * (gameWindow.clientHeight - 50);
-                mole.style.left = `${x}px`;
-                mole.style.top = `${y}px`;
-            }
-        }
-
-        // Gestione Volpix
-        const volpixButton = document.querySelector('.volpix-button');
-        const volpixWindow = document.querySelector('.volpix-window');
-
-        volpixButton.addEventListener('click', function() {
+        volpixButton.addEventListener('click', () => {
             volpixWindow.style.display = 'flex';
         });
 
-        // Gestione Staff
-        function openStaffPage() {
+        staffButton.addEventListener('click', () => {
             volpixWindow.style.display = 'none';
-            document.querySelector('.staff-window').style.display = 'flex';
+            staffWindow.style.display = 'flex';
+        });
+
+        exitButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                gameWindow.style.display = 'none';
+                volpixWindow.style.display = 'none';
+                staffWindow.style.display = 'none';
+            });
+        });
+
+        themeButton.addEventListener('click', () => {
+            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+            document.body.style.backgroundColor = themes[currentThemeIndex];
+        });
+
+        // Game script
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const pixelSize = 30;
+        const gameDuration = 30000; // 30 seconds
+        let score = 0;
+        let highScore = 0;
+        let gameActive = false;
+        let startTime;
+        let interval;
+
+        function getRandomPosition() {
+            const x = Math.floor(Math.random() * (canvas.width - pixelSize));
+            const y = Math.floor(Math.random() * (canvas.height - pixelSize));
+            return { x, y };
         }
 
-        // Chiudi Finestra
-        function closeWindow() {
-            document.querySelectorAll('.game-window, .volpix-window, .staff-window').forEach(window => {
-                window.style.display = 'none';
-            });
-            score = 0;
-            document.getElementById('score').textContent = score;
+        function drawPixel() {
+            const { x, y } = getRandomPosition();
+            ctx.fillStyle = '#ff0000';
+            ctx.fillRect(x, y, pixelSize, pixelSize);
         }
+
+        function startGame() {
+            if (gameActive) return;
+            gameActive = true;
+            score = 0;
+            document.getElementById('score').textContent = `Score: ${score}`;
+            startTime = Date.now();
+            interval = setInterval(() => {
+                if (Date.now() - startTime > gameDuration) {
+                    endGame();
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    drawPixel();
+                }
+            }, 1000);
+        }
+
+        function endGame() {
+            clearInterval(interval);
+            gameActive = false;
+            if (score > highScore) {
+                highScore = score;
+                document.getElementById('highscore').textContent = `High Score: ${highScore}`;
+            }
+            alert(`Game Over! Your Score: ${score}`);
+        }
+
+        canvas.addEventListener('click', (event) => {
+            if (!gameActive) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            const imageData = ctx.getImageData(x, y, pixelSize, pixelSize).data;
+            if (imageData[0] === 255 && imageData[1] === 0 && imageData[2] === 0) {
+                score++;
+                document.getElementById('score').textContent = `Score: ${score}`;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drawPixel();
+            }
+        });
+
+        document.getElementById('startButton').addEventListener('click', startGame);
     </script>
 </body>
 </html>
