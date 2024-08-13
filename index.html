@@ -20,9 +20,10 @@
             margin: 50px 0;
         }
 
-        .instagram-logo {
+        .instagram-logo, .tiktok-logo {
             width: 100px;
             cursor: pointer;
+            margin: 0 10px;
         }
 
         .contact-form {
@@ -86,7 +87,25 @@
             z-index: 100;
         }
 
+        .toggle-button.on {
+            background-color: green;
+        }
+
         .game-button {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: green;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            z-index: 100;
+        }
+
+        .volpix-button {
             position: fixed;
             bottom: 20px;
             right: 20px;
@@ -100,187 +119,22 @@
             z-index: 100;
         }
 
-        .volpix-button {
-            position: fixed;
-            bottom: 20px;
-            right: 120px;
-            padding: 10px 20px;
-            background-color: orange;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            border-radius: 5px;
-            z-index: 100;
-        }
-
-        .toggle-button.on {
-            background-color: green;
-        }
-
-        .game {
-            margin-top: 20px;
-            font-size: 20px;
-            position: relative;
-            height: 400px;
-            background-color: #87CEEB;
-            border: 3px solid #4B5320;
-            overflow: hidden;
-            border-radius: 10px;
-        }
-
-        .character, .diamond {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            background-size: cover;
-        }
-
-        .character {
-            background-image: url('https://i.imgur.com/uHJD6Zw.png');
-        }
-
-        .diamond {
-            background-image: url('https://i.imgur.com/zPn6kS2.png');
-        }
-
-        .score {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            color: black;
-            font-size: 24px;
-            z-index: 10;
-        }
-
-        .leaderboard {
-            margin-top: 30px;
-            text-align: center;
-        }
-
-        .leaderboard table {
-            margin: 0 auto;
-            border-collapse: collapse;
-            width: 80%;
-            max-width: 500px;
-            border: 2px solid black;
-        }
-
-        .leaderboard th, .leaderboard td {
-            border: 1px solid black;
-            padding: 10px;
-            text-align: center;
-            background-color: white;
-        }
-
-        .leaderboard th {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .staff-table {
-            margin-top: 50px;
-            text-align: center;
-        }
-
-        .staff-table table {
-            margin: 0 auto;
-            border-collapse: collapse;
-            width: 80%;
-            max-width: 500px;
-            border: 2px solid black;
-            background-color: #FFA500;
-        }
-
-        .staff-table th, .staff-table td {
-            border: 1px solid black;
-            padding: 10px;
-            text-align: center;
-            color: black;
-        }
-
-        .staff-table th {
-            background-color: #FFA500;
-            color: white;
-        }
-
-        .staff-table .owner { color: #FF0000; }
-        .staff-table .sr-admin { color: #8B0000; }
-        .staff-table .admin { color: #A52A2A; }
-        .staff-table .sr-mod { color: #0000FF; }
-        .staff-table .mod-plus { color: #00008B; }
-        .staff-table .mod { color: #0000CD; }
-        .staff-table .helper { color: #008000; }
-    </style>
-</head>
-<body>
-    <button class="toggle-button">OFF</button>
-    <button class="theme-button">Cambia Tema</button>
-    <button class="game-button" onclick="openGame()">GAME</button>
-    <button class="volpix-button" onclick="openVolpix()">Volpix</button>
-
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Youness Informacion</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #8B0000;
-            color: black;
-            overflow: hidden;
-            position: relative;
-            transition: background-color 0.5s, color 0.5s;
-        }
-
-        .section {
-            text-align: center;
-            margin: 50px 0;
-        }
-
-        .instagram-logo {
-            width: 100px;
-            cursor: pointer;
-        }
-
-        .contact-form {
-            margin: 0 auto;
-            max-width: 300px;
-        }
-
-        .contact-form input, .contact-form textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            border: none;
-            border-radius: 5px;
-        }
-
-        .contact-form button {
-            width: 100%;
-            padding: 10px;
-            background-color: black;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        #particles {
+        .game-window, .volpix-window, .staff-window {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: 0;
+            background-color: #FFD700;
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
         }
 
-        .toggle-button {
-            position: fixed;
+        .exit-button {
+            position: absolute;
             top: 20px;
             right: 20px;
             padding: 10px 20px;
@@ -290,57 +144,10 @@
             cursor: pointer;
             font-size: 16px;
             border-radius: 5px;
-            z-index: 100;
         }
 
-        .theme-button {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            padding: 10px 20px;
-            background-color: blue;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            border-radius: 5px;
-            z-index: 100;
-        }
-
-        .game-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 10px 20px;
-            background-color: orange;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            border-radius: 5px;
-            z-index: 100;
-        }
-
-        .volpix-button {
-            position: fixed;
-            bottom: 20px;
-            right: 120px;
-            padding: 10px 20px;
-            background-color: orange;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            border-radius: 5px;
-            z-index: 100;
-        }
-
-        .toggle-button.on {
-            background-color: green;
-        }
-
+        /* Game Styles */
         .game {
-            margin-top: 20px;
             font-size: 20px;
             position: relative;
             height: 400px;
@@ -350,19 +157,13 @@
             border-radius: 10px;
         }
 
-        .character, .diamond {
+        .mole {
             position: absolute;
             width: 40px;
             height: 40px;
+            background-image: url('https://i.imgur.com/1bX5QH6.png');
             background-size: cover;
-        }
-
-        .character {
-            background-image: url('https://i.imgur.com/uHJD6Zw.png');
-        }
-
-        .diamond {
-            background-image: url('https://i.imgur.com/zPn6kS2.png');
+            cursor: pointer;
         }
 
         .score {
@@ -374,77 +175,94 @@
             z-index: 10;
         }
 
-        .leaderboard {
+        /* Volpix Styles */
+        .volpix-container {
+            background-color: orange;
+            padding: 50px;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+        }
+
+        .volpix-ip {
+            font-size: 30px;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #FFD700;
+            background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: rainbow 2s infinite;
+        }
+
+        @keyframes rainbow {
+            0%{background-position: 0% 50%;}
+            50%{background-position: 100% 50%;}
+            100%{background-position: 0% 50%;}
+        }
+
+        .volpix-button-group {
             margin-top: 30px;
+        }
+
+        .volpix-button-group button {
+            padding: 10px 20px;
+            background-color: #FFD700;
+            color: black;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            border-radius: 5px;
+        }
+
+        /* Staff Styles */
+        .staff-container {
+            background-color: orange;
+            padding: 50px;
+            border-radius: 10px;
             text-align: center;
-        }
-
-        .leaderboard table {
-            margin: 0 auto;
-            border-collapse: collapse;
-            width: 80%;
-            max-width: 500px;
-            border: 2px solid black;
-        }
-
-        .leaderboard th, .leaderboard td {
-            border: 1px solid black;
-            padding: 10px;
-            text-align: center;
-            background-color: white;
-        }
-
-        .leaderboard th {
-            background-color: #4CAF50;
             color: white;
         }
 
         .staff-table {
-            margin-top: 50px;
-            text-align: center;
-        }
-
-        .staff-table table {
+            width: 100%;
+            max-width: 500px;
             margin: 0 auto;
             border-collapse: collapse;
-            width: 80%;
-            max-width: 500px;
-            border: 2px solid black;
-            background-color: #FFA500;
         }
 
         .staff-table th, .staff-table td {
-            border: 1px solid black;
             padding: 10px;
-            text-align: center;
+            border: 2px solid black;
             color: black;
+            background-color: white;
+            font-size: 18px;
         }
 
-        .staff-table th {
-            background-color: #FFA500;
-            color: white;
-        }
-
-        .staff-table .owner { color: #FF0000; }
-        .staff-table .sr-admin { color: #8B0000; }
-        .staff-table .admin { color: #A52A2A; }
-        .staff-table .sr-mod { color: #0000FF; }
-        .staff-table .mod-plus { color: #00008B; }
-        .staff-table .mod { color: #0000CD; }
-        .staff-table .helper { color: #008000; }
+        .staff-table .owner { color: red; }
+        .staff-table .sradmin { color: darkred; }
+        .staff-table .admin { color: #8B0000; }
+        .staff-table .srmod { color: blue; }
+        .staff-table .modplus { color: darkblue; }
+        .staff-table .mod { color: #00008B; }
+        .staff-table .helper { color: green; }
     </style>
 </head>
 <body>
+    <!-- Pulsanti di controllo -->
     <button class="toggle-button">OFF</button>
     <button class="theme-button">Cambia Tema</button>
-    <button class="game-button" onclick="openGame()">GAME</button>
-    <button class="volpix-button" onclick="openVolpix()">Volpix</button>
+    <button class="game-button">GAME</button>
+    <button class="volpix-button">Volpix</button>
 
+    <!-- Effetto particelle -->
     <div id="particles"></div>
 
+    <!-- Sezione Contatti -->
     <div class="section">
         <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="instagram-logo" alt="Instagram Logo" onclick="window.open('https://www.instagram.com/', '_blank')">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/TikTok_logo_2020.png" class="instagram-logo" alt="TikTok Logo" onclick="window.open('https://www.tiktok.com/', '_blank')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/TikTok_logo.svg" class="tiktok-logo" alt="TikTok Logo" onclick="window.open('https://www.tiktok.com/', '_blank')">
     </div>
 
     <div class="section">
@@ -457,433 +275,106 @@
         </form>
     </div>
 
-    <div class="section game">
-        <div class="score">Punteggio: <span id="score">0</span></div>
-        <div class="character" id="character" style="top: 180px; left: 180px;"></div>
-        <div class="diamond" id="diamond" style="top: 50px; left: 50px;"></div>
+    <!-- Finestra del Gioco -->
+    <div class="game-window">
+        <button class="exit-button" onclick="closeWindow()">EXIT</button>
+        <div class="game">
+            <div class="score">Punteggio: <span id="score">0</span></div>
+            <div class="mole" id="mole"></div>
+        </div>
     </div>
 
-    <div class="section leaderboard">
-        <h2>Classifica</h2>
-        <table>
-            <tr>
-                <th>Email</th>
-                <th>Punteggio</th>
-            </tr>
-            <tr>
-                <td>kendalelazzouzi@gmail.com</td>
-                <td>120</td>
-            </tr>
-            <tr>
-                <td>example@mail.com</td>
-                <td>95</td>
-            </tr>
-            <tr>
-                <td>youness@example.com</td>
-                <td>85</td>
-            </tr>
-        </table>
+    <!-- Finestra Volpix -->
+    <div class="volpix-window">
+        <button class="exit-button" onclick="closeWindow()">EXIT</button>
+        <div class="volpix-container">
+            <div class="volpix-ip">volpixmc.org</div>
+            <div class="volpix-button-group">
+                <button onclick="openStaffPage()">STAFF</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Finestra Staff -->
+    <div class="staff-window">
+        <button class="exit-button" onclick="closeWindow()">EXIT</button>
+        <div class="staff-container">
+            <table class="staff-table">
+                <tr><th>OWNER</th><td class="owner">youness</td><td class="owner">ale.</td></tr>
+                <tr><th>SR.ADMIN</th><td class="sradmin">niente</td><td class="sradmin">niente</td></tr>
+                <tr><th>ADMIN</th><td class="admin">sandy</td><td class="admin">niente</td></tr>
+                <tr><th>SR.MOD</th><td class="srmod">niente</td><td class="srmod">niente</td></tr>
+                <tr><th>MOD+</th><td class="modplus">peppos</td><td class="modplus">niente</td></tr>
+                <tr><th>MOD</th><td class="mod">niente</td><td class="mod">niente</td></tr>
+                <tr><th>HELPER</th><td class="helper">giulia</td><td class="helper">niente</td></tr>
+            </table>
+        </div>
     </div>
 
     <script>
-        // Animazione delle particelle
-        const particles = document.getElementById('particles');
-        let particlesEnabled = true;
-
-        function createParticle() {
-            if (particlesEnabled) {
-                const particle = document.createElement('div');
-                particle.style.position = 'absolute';
-                particle.style.left = Math.random() * 100 + 'vw';
-                particle.style.top = '-10px';
-                particle.style.width = '5px';
-                particle.style.height = '5px';
-                particle.style.backgroundColor = 'white';
-                particle.style.borderRadius = '50%';
-                particle.style.opacity = Math.random();
-                particle.style.transform = `scale(${Math.random()})`;
-                particle.style.transition = 'transform 3s ease, top 3s ease';
-
-                particles.appendChild(particle);
-
-                setTimeout(() => {
-                    particle.style.transform = 'translateY(100vh)';
-                }, 10);
-
-                setTimeout(() => {
-                    particle.remove();
-                }, 3000);
-            }
-        }
-
-        setInterval(createParticle, 100);
-
-        // ON-OFF particelle
-        document.querySelector('.toggle-button').addEventListener('click', function() {
-            particlesEnabled = !particlesEnabled;
-            this.textContent = particlesEnabled ? 'OFF' : 'ON';
-            this.classList.toggle('on', particlesEnabled);
+        // Gestione Tema
+        document.querySelector('.theme-button').addEventListener('click', function() {
+            document.body.classList.toggle('dark-theme');
+            document.body.style.backgroundColor = document.body.classList.contains('dark-theme') ? 'black' : '#8B0000';
+            document.body.style.color = document.body.classList.contains('dark-theme') ? 'white' : 'black';
         });
 
-        // Mini gioco: Minecraft 2D
-        const character = document.getElementById('character');
-        const diamond = document.getElementById('diamond');
-        const scoreElement = document.getElementById('score');
+        // Gestione ON-OFF
+        document.querySelector('.toggle-button').addEventListener('click', function() {
+            this.classList.toggle('on');
+            this.textContent = this.classList.contains('on') ? 'ON' : 'OFF';
+        });
+
+        // Gestione Gioco
+        const gameButton = document.querySelector('.game-button');
+        const gameWindow = document.querySelector('.game-window');
         let score = 0;
 
-        function moveCharacter(e) {
-            const key = e.key;
-            const characterRect = character.getBoundingClientRect();
-            const gameRect = document.querySelector('.game').getBoundingClientRect();
-
-            if (key === 'ArrowUp' && characterRect.top > gameRect.top) {
-                character.style.top = character.offsetTop - 10 + 'px';
-            }
-            if (key === 'ArrowDown' && characterRect.bottom < gameRect.bottom) {
-                character.style.top = character.offsetTop + 10 + 'px';
-            }
-            if (key === 'ArrowLeft' && characterRect.left > gameRect.left) {
-                character.style.left = character.offsetLeft - 10 + 'px';
-            }
-            if (key === 'ArrowRight' && characterRect.right < gameRect.right) {
-                character.style.left = character.offsetLeft + 10 + 'px';
-            }
-
-            checkCollision();
-        }
-
-        function checkCollision() {
-            const characterRect = character.getBoundingClientRect();
-            const diamondRect = diamond.getBoundingClientRect();
-
-            if (
-                characterRect.left < diamondRect.right &&
-                characterRect.right > diamondRect.left &&
-                characterRect.top < diamondRect.bottom &&
-                characterRect.bottom > diamondRect.top
-            ) {
-                score += 1;
-                scoreElement.textContent = score;
-                moveDiamond();
-            }
-        }
-
-        function moveDiamond() {
-            const gameRect = document.querySelector('.game').getBoundingClientRect();
-            const randomTop = Math.floor(Math.random() * (gameRect.height - 40));
-            const randomLeft = Math.floor(Math.random() * (gameRect.width - 40));
-            diamond.style.top = randomTop + 'px';
-            diamond.style.left = randomLeft + 'px';
-        }
-
-        document.addEventListener('keydown', moveCharacter);
-
-        // Cambia tema
-        const themes = [
-            {backgroundColor: '#8B0000', color: 'black'},
-            {backgroundColor: '#00008B', color: 'white'},
-            {backgroundColor: '#4B5320', color: 'yellow'},
-            {backgroundColor: '#FFD700', color: 'black'},
-            {backgroundColor: '#00CED1', color: 'navy'},
-            {backgroundColor: '#228B22', color: 'black'},
-            {backgroundColor: '#FF69B4', color: 'white'},
-            {backgroundColor: '#8A2BE2', color: 'yellow'},
-            {backgroundColor: '#D2691E', color: 'black'},
-            {backgroundColor: '#7FFF00', color: 'black'}
-        ];
-
-        let themeIndex = 0;
-
-        document.querySelector('.theme-button').addEventListener('click', function() {
-            themeIndex = (themeIndex + 1) % themes.length;
-            document.body.style.backgroundColor = themes[themeIndex].backgroundColor;
-            document.body.style.color = themes[themeIndex].color;
+        gameButton.addEventListener('click', function() {
+            gameWindow.style.display = 'flex';
+            startGame();
         });
 
-        // Funzione per aprire la finestra di gioco
-        function openGame() {
-            const gameWindow = window.open('', '', 'width=600,height=500');
-            gameWindow.document.write(`
-                <!DOCTYPE html>
-                <html lang="it">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Mini Gioco</title>
-                    <style>
-                        body {
-                            margin: 0;
-                            font-family: Arial, sans-serif;
-                            background-color: #87CEEB;
-                            color: black;
-                            overflow: hidden;
-                            position: relative;
-                        }
-                        .game {
-                            margin: 20px auto;
-                            font-size: 20px;
-                            position: relative;
-                            height: 400px;
-                            background-color: #87CEEB;
-                            border: 3px solid #4B5320;
-                            overflow: hidden;
-                            border-radius: 10px;
-                        }
-                        .character, .diamond {
-                            position: absolute;
-                            width: 40px;
-                            height: 40px;
-                            background-size: cover;
-                        }
-                        .character {
-                            background-image: url('https://i.imgur.com/uHJD6Zw.png');
-                        }
-                        .diamond {
-                            background-image: url('https://i.imgur.com/zPn6kS2.png');
-                        }
-                        .score {
-                            position: absolute;
-                            top: 10px;
-                            left: 10px;
-                            color: black;
-                            font-size: 24px;
-                        }
-                        .exit-button {
-                            position: fixed;
-                            top: 10px;
-                            right: 10px;
-                            padding: 10px 20px;
-                            background-color: red;
-                            color: white;
-                            border: none;
-                            cursor: pointer;
-                            font-size: 16px;
-                            border-radius: 5px;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <button class="exit-button" onclick="window.close()">EXIT</button>
-                    <div class="game">
-                        <div class="score">Punteggio: <span id="score">0</span></div>
-                        <div class="character" id="character" style="top: 180px; left: 180px;"></div>
-                        <div class="diamond" id="diamond" style="top: 50px; left: 50px;"></div>
-                    </div>
-                    <script>
-                        const character = document.getElementById('character');
-                        const diamond = document.getElementById('diamond');
-                        const scoreElement = document.getElementById('score');
-                        let score = 0;
+        // Funzioni Gioco
+        function startGame() {
+            const mole = document.getElementById('mole');
+            let gameInterval = setInterval(moveMole, 1000);
 
-                        function moveCharacter(e) {
-                            const key = e.key;
-                            const characterRect = character.getBoundingClientRect();
-                            const gameRect = document.querySelector('.game').getBoundingClientRect();
+            mole.addEventListener('click', function() {
+                score++;
+                document.getElementById('score').textContent = score;
+                moveMole();
+            });
 
-                            if (key === 'ArrowUp' && characterRect.top > gameRect.top) {
-                                character.style.top = character.offsetTop - 10 + 'px';
-                            }
-                            if (key === 'ArrowDown' && characterRect.bottom < gameRect.bottom) {
-                                character.style.top = character.offsetTop + 10 + 'px';
-                            }
-                            if (key === 'ArrowLeft' && characterRect.left > gameRect.left) {
-                                character.style.left = character.offsetLeft - 10 + 'px';
-                            }
-                            if (key === 'ArrowRight' && characterRect.right < gameRect.right) {
-                                character.style.left = character.offsetLeft + 10 + 'px';
-                            }
-
-                            checkCollision();
-                        }
-
-                        function checkCollision() {
-                            const characterRect = character.getBoundingClientRect();
-                            const diamondRect = diamond.getBoundingClientRect();
-
-                            if (
-                                characterRect.left < diamondRect.right &&
-                                characterRect.right > diamondRect.left &&
-                                characterRect.top < diamondRect.bottom &&
-                                characterRect.bottom > diamondRect.top
-                            ) {
-                                score += 1;
-                                scoreElement.textContent = score;
-                                moveDiamond();
-                            }
-                        }
-
-                        function moveDiamond() {
-                            const gameRect = document.querySelector('.game').getBoundingClientRect();
-                            const randomTop = Math.floor(Math.random() * (gameRect.height - 40));
-                            const randomLeft = Math.floor(Math.random() * (gameRect.width - 40));
-                            diamond.style.top = randomTop + 'px';
-                            diamond.style.left = randomLeft + 'px';
-                        }
-
-                        document.addEventListener('keydown', moveCharacter);
-                    </script>
-                </body>
-                </html>
-            `);
+            function moveMole() {
+                const x = Math.random() * (gameWindow.clientWidth - 50);
+                const y = Math.random() * (gameWindow.clientHeight - 50);
+                mole.style.left = `${x}px`;
+                mole.style.top = `${y}px`;
+            }
         }
 
-        // Funzione per aprire la pagina Volpix
-        function openVolpix() {
-            const volpixWindow = window.open('', '', 'width=600,height=400');
-            volpixWindow.document.write(`
-                <!DOCTYPE html>
-                <html lang="it">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Volpix</title>
-                    <style>
-                        body {
-                            margin: 0;
-                            font-family: Arial, sans-serif;
-                            background-color: #FFA500;
-                            color: black;
-                            text-align: center;
-                            padding: 20px;
-                        }
-                        .button {
-                            padding: 10px 20px;
-                            background-color: orange;
-                            color: white;
-                            border: none;
-                            cursor: pointer;
-                            font-size: 16px;
-                            border-radius: 5px;
-                            margin: 5px;
-                        }
-                        .button:hover {
-                            background-color: darkorange;
-                        }
-                        .rainbow-text {
-                            font-size: 24px;
-                            font-weight: bold;
-                            color: transparent;
-                            background: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
-                            background-clip: text;
-                            -webkit-background-clip: text;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <button class="button" onclick="document.querySelector('.rainbow-text').style.display='block'">IP</button>
-                    <button class="button" onclick="window.close()">EXIT</button>
-                    <button class="button" onclick="openStaff()">STAFF</button>
-                    <div class="rainbow-text" style="display:none;">volpixmc.org</div>
-                    <script>
-                        function openStaff() {
-                            const staffWindow = window.open('', '', 'width=600,height=400');
-                            staffWindow.document.write(`
-                                <!DOCTYPE html>
-                                <html lang="it">
-                                <head>
-                                    <meta charset="UTF-8">
-                                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                                    <title>Staff</title>
-                                    <style>
-                                        body {
-                                            margin: 0;
-                                            font-family: Arial, sans-serif;
-                                            background-color: #FFA500;
-                                            color: black;
-                                            text-align: center;
-                                            padding: 20px;
-                                        }
-                                        .button {
-                                            padding: 10px 20px;
-                                            background-color: orange;
-                                            color: white;
-                                            border: none;
-                                            cursor: pointer;
-                                            font-size: 16px;
-                                            border-radius: 5px;
-                                            margin: 5px;
-                                        }
-                                        .button:hover {
-                                            background-color: darkorange;
-                                        }
-                                        table {
-                                            margin: 20px auto;
-                                            border-collapse: collapse;
-                                            width: 80%;
-                                            max-width: 500px;
-                                            background-color: #FFA500;
-                                        }
-                                        th, td {
-                                            border: 1px solid black;
-                                            padding: 10px;
-                                            text-align: center;
-                                        }
-                                        th {
-                                            background-color: #FFA500;
-                                            color: white;
-                                        }
-                                        .owner { color: #FF0000; }
-                                        .sr-admin { color: #8B0000; }
-                                        .admin { color: #A52A2A; }
-                                        .sr-mod { color: #0000FF; }
-                                        .mod-plus { color: #00008B; }
-                                        .mod { color: #0000CD; }
-                                        .helper { color: #008000; }
-                                    </style>
-                                </head>
-                                <body>
-                                    <button class="button" onclick="window.close()">EXIT</button>
-                                    <h2>Classifica Staff</h2>
-                                    <table>
-                                        <tr>
-                                            <th>Ruolo</th>
-                                            <th>Nome</th>
-                                            <th>Altro</th>
-                                        </tr>
-                                        <tr>
-                                            <td class="owner">OWNER</td>
-                                            <td>youness</td>
-                                            <td>ale</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="sr-admin">SR.ADMIN</td>
-                                            <td>niente</td>
-                                            <td>niente</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="admin">ADMIN</td>
-                                            <td>sandy</td>
-                                            <td>niente</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="sr-mod">SR.MOD</td>
-                                            <td>niente</td>
-                                            <td>niente</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="mod-plus">MOD+</td>
-                                            <td>peppos</td>
-                                            <td>niente</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="mod">MOD</td>
-                                            <td>niente</td>
-                                            <td>niente</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="helper">HELPER</td>
-                                            <td>giulia</td>
-                                            <td>niente</td>
-                                        </tr>
-                                    </table>
-                                </body>
-                                </html>
-                            `);
-                        }
-                    </script>
-                </body>
-                </html>
-            `);
+        // Gestione Volpix
+        const volpixButton = document.querySelector('.volpix-button');
+        const volpixWindow = document.querySelector('.volpix-window');
+
+        volpixButton.addEventListener('click', function() {
+            volpixWindow.style.display = 'flex';
+        });
+
+        // Gestione Staff
+        function openStaffPage() {
+            volpixWindow.style.display = 'none';
+            document.querySelector('.staff-window').style.display = 'flex';
+        }
+
+        // Chiudi Finestra
+        function closeWindow() {
+            document.querySelectorAll('.game-window, .volpix-window, .staff-window').forEach(window => {
+                window.style.display = 'none';
+            });
+            score = 0;
+            document.getElementById('score').textContent = score;
         }
     </script>
 </body>
